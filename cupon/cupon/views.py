@@ -6,6 +6,9 @@ from cupon import otp_Gen
 from services.models import Service
 
 def homePage(request):
+    return render(request, 'home_page.html')
+
+def genCoupon(request):
     form_data = []
     img_path = ''
     try:
@@ -25,7 +28,7 @@ def homePage(request):
             return HttpResponseRedirect('/coupon/')
     except:
         pass
-    return render(request,"index.html")
+    return render(request,"gen_coupon.html")
 
 
 
