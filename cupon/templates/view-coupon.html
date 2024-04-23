@@ -1,0 +1,41 @@
+{% include "header.html" %}
+    
+    <div class="w3-main" style="margin-left:300px;margin-top:43px;">
+
+        <div class="container ticket">
+            <div class="row">
+              <div class="col-12">
+                <table class="table table-bordered m-3 ">
+                  <thead>
+                    <tr>
+                      <th scope="col">No.</th>
+                      <th scope="col">Name</th>
+                      <th scope="col">Event</th>
+                      <th scope="col">Status</th>
+                      <!-- <th scope="col">Action</th> -->
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for n in coupon_data %}
+                        <tr>
+                        <th>{{forloop.counter}}</th>
+                        <td>{{n.name}}</td>
+                        <td>{{n.event}}</td>
+                        <td>{{n.status}}</td>
+                        <!-- <td>
+                            <button type="button" class="btn btn-primary"><i class="far fa-eye"></i></button>
+                        <button type="button" class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
+                        </td> -->
+                        </tr>
+                    {% endfor %}
+
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+
+    </div>
+    
+{% include "footer.html" %}

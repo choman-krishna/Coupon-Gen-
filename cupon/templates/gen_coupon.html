@@ -21,9 +21,9 @@
                         <label for="event" class="form-label">Event</label>
                         <select name="Event" class="form-select form-control" aria-label="Default select example" id="event">
                             <option selected>Open this select menu</option>
-                            <option value="one">One</option>
-                            <option value="two">Two</option>
-                            <option value="three">Three</option>
+                            {% for n in event_data %}
+                                <option value="{{n.event_name}}">{{n.event_name}}</option>
+                            {% endfor %}
                         </select>
                     </div>
                 </div>

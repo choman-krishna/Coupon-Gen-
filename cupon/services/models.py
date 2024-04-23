@@ -9,4 +9,11 @@ class Service(models.Model):
     status = models.BooleanField(default = False)
     created_at = models.DateTimeField(default=timezone.now)
 
+class EventList (models.Model):
+    event_name = models.CharField(max_length=20)
+    date = models.CharField(max_length=2)
+    month = models.CharField(max_length=10, default='May')
+    year = models.CharField(max_length=4, default='2024')
+
+
 # Create your models here.

@@ -12,4 +12,3 @@ def generate_random_otp(length=6):
 
 # Generate and print a random OTP
 otp = generate_random_otp()
-print("Random OTP:", otp)
