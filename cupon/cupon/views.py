@@ -1,9 +1,11 @@
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, StreamingHttpResponse
 from django.shortcuts import render
+from django.views.decorators import gzip
 
 from cupon import qr
 from cupon import otp_Gen
 from services.models import Service, EventList
+from cupon import qr_scanner
 
 def homePage(request):
     return render(request, 'home_page.html')
@@ -35,7 +37,7 @@ def genCoupon(request):
 
 
 def coupon(request):
-    
+
     service_data = Service.objects.latest('created_at') 
     event_db = EventList.objects.get(event_name = service_data.event)
 
@@ -45,3 +47,22 @@ def coupon(request):
 def viewCoupons(request):
     service_data = Service.objects.all()
     return render(request, 'view-coupon.html', {'coupon_data': service_data})
+
+@gzip.gzip_page
+def cameraView(request):
+
+    try:
+        cam = qr_scanner.VideoCamera()
+        return StreamingHttpResponse(gen(cam), content_type = "multipart/x-mixed-replace;boundary=frame")
+    except:
+        pass
+
+    return render(request, 'camera.html')
+
+
+# Camera Streaming 
+def gen(camera):
+    while True:
+        frame = camera.get_frame()
+        yield (b'--frame \r\n'
+                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')

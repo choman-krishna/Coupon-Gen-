@@ -26,7 +26,8 @@ urlpatterns = [
     path('generator/', views.genCoupon),
     path('admin/', admin.site.urls),
     path('coupon/', views.coupon),
-    path('viewCoupons/', views.viewCoupons)    
+    path('viewCoupons/', views.viewCoupons),
+    path('camera/', views.cameraView)    
 ]
 
 if settings.DEBUG:
