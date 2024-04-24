@@ -4,7 +4,7 @@ from django.views.decorators import gzip
 
 from cupon import qr
 from cupon import otp_Gen
-from services.models import Service, EventList
+from services.models import Service, EventList, QrData
 from cupon import qr_scanner
 
 def homePage(request):
@@ -51,12 +51,12 @@ def viewCoupons(request):
 
 # Camera Streaming 
 
-def scan_qr(request):
+def scan_qr(request):        
     return render(request, 'camera.html')
 
 
 
-# @gzip.gzip_page   
+@gzip.gzip_page   
 def cameraView(request):    
     cam = qr_scanner.VideoCamera()
     return StreamingHttpResponse(gen(cam), content_type = "multipart/x-mixed-replace;boundary=frame")
@@ -65,11 +65,22 @@ def cameraView(request):
 
 def gen(camera):
     while True:
-        frame, stat = camera.get_frame()
+        frame, stat= camera.get_frame()
         if stat:
             camera.release_camera()
+            check_qr()
             return
         yield (b'--frame \r\n'
                 b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
+        
+
+def check_qr():
+    qr_db = QrData.objects.last()
+    service_db = Service.objects.filter(coupon_id=qr_db.otp)
+    if service_db.exists() and service_db.first().status == False:
+        Service.objects.filter(coupon_id=qr_db.otp).update(status = True)
+        print("Exists")
+    else:
+        print("not")
         
 

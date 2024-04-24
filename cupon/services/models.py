@@ -15,7 +15,9 @@ class EventList (models.Model):
     month = models.CharField(max_length=10, default='May')
     year = models.CharField(max_length=4, default='2024')
 
-
+class QrData(models.Model):
+    name = models.CharField(max_length=20)
+    otp = models.CharField(max_length=20)
 
 
 # Create your models here.
