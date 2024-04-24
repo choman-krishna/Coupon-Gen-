@@ -45,24 +45,31 @@ def coupon(request):
 
 
 def viewCoupons(request):
-    service_data = Service.objects.all()
+    service_data = Service.objects.all() 
     return render(request, 'view-coupon.html', {'coupon_data': service_data})
-
-@gzip.gzip_page
-def cameraView(request):
-
-    try:
-        cam = qr_scanner.VideoCamera()
-        return StreamingHttpResponse(gen(cam), content_type = "multipart/x-mixed-replace;boundary=frame")
-    except:
-        pass
-
-    return render(request, 'camera.html')
 
 
 # Camera Streaming 
+
+def scan_qr(request):
+    return render(request, 'camera.html')
+
+
+
+# @gzip.gzip_page   
+def cameraView(request):    
+    cam = qr_scanner.VideoCamera()
+    return StreamingHttpResponse(gen(cam), content_type = "multipart/x-mixed-replace;boundary=frame")
+
+
+
 def gen(camera):
     while True:
-        frame = camera.get_frame()
+        frame, stat = camera.get_frame()
+        if stat:
+            camera.release_camera()
+            return
         yield (b'--frame \r\n'
                 b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
+        
+

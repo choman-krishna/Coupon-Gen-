@@ -27,7 +27,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('coupon/', views.coupon),
     path('viewCoupons/', views.viewCoupons),
-    path('camera/', views.cameraView)    
+    path('check/', views.scan_qr) ,
+    path('cameraOn/', views.cameraView)
 ]
 
 if settings.DEBUG:

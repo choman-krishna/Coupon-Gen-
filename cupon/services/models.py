@@ -16,4 +16,6 @@ class EventList (models.Model):
     year = models.CharField(max_length=4, default='2024')
 
 
+
+
 # Create your models here.
