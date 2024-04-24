@@ -28,7 +28,8 @@ urlpatterns = [
     path('coupon/', views.coupon),
     path('viewCoupons/', views.viewCoupons),
     path('check/', views.scan_qr) ,
-    path('cameraOn/', views.cameraView)
+    path('cameraOn/', views.cameraView),
+    path('display/', views.displayStatus)
 ]
 
 if settings.DEBUG:

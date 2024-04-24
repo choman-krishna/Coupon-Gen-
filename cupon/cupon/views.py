@@ -69,7 +69,7 @@ def gen(camera):
         if stat:
             camera.release_camera()
             check_qr()
-            pass
+            return 
         yield (b'--frame \r\n'
                 b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
         
@@ -79,8 +79,12 @@ def check_qr():
     service_db = Service.objects.filter(coupon_id=qr_db.otp)
     if service_db.exists() and service_db.first().status == False:
         Service.objects.filter(coupon_id=qr_db.otp).update(status = True)
-        print("Exists")
+        return HttpResponseRedirect('/display/')
     else:
         print("not")
+
+
+def displayStatus(request):
+    return render(request, 'displayStatus.html')
         
 
