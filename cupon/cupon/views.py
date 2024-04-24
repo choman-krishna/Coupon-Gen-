@@ -4,7 +4,7 @@ from django.views.decorators import gzip
 
 from cupon import qr
 from cupon import otp_Gen
-from services.models import Service, EventList, QrData
+from services.models import Service, EventList
 from cupon import qr_scanner
 
 def homePage(request):

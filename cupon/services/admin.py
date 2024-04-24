@@ -1,5 +1,5 @@
 from django.contrib import admin
-from services.models import Service, EventList, QrData
+from services.models import Service, EventList
 
 class ServiceAdmin(admin.ModelAdmin):
     list_display = ('name', 'event', 'coupon_id', 'status', 'qr_img', 'created_at')
@@ -7,11 +7,8 @@ class ServiceAdmin(admin.ModelAdmin):
 class EventAdmin(admin.ModelAdmin):
     list_display = ('event_name', 'date', 'month', 'year')
 
-class QrAdmin(admin.ModelAdmin):
-    list_display = ('name', 'otp')
 
 # Register your models here.
 admin.site.register(Service, ServiceAdmin)
 admin.site.register(EventList, EventAdmin)
-admin.site.register(QrData, QrAdmin)
 

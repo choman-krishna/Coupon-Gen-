@@ -1,7 +1,7 @@
 import cv2
 import threading
 from pyzbar.pyzbar import decode 
-from services.models import QrData, Service
+from services.models import Service
 
 
 class VideoCamera(object):
@@ -38,9 +38,9 @@ class VideoCamera(object):
 
         self.data_list = self.qr_data.split(',')
         if self.qr_scanned and len(self.data_list) == 3:
-            data_db = QrData(name=self.data_list[0], otp=self.data_list[2])
-            data_db.save()
-            self.check_qr()
+            # data_db = QrData(name=self.data_list[0], otp=)
+            # data_db.save()
+            self.check_qr(self.data_list[2])
             self.release_camera()
             
 
@@ -48,11 +48,10 @@ class VideoCamera(object):
         return jpeg.tobytes(), self.qr_scanned
 
 
-    def check_qr(self):
-        qr_db = QrData.objects.last()
-        service_db = Service.objects.filter(coupon_id=qr_db.otp)
+    def check_qr(self,otp):
+        service_db = Service.objects.filter(coupon_id = otp)
         if service_db.exists() and service_db.first().status == False:
-            Service.objects.filter(coupon_id=qr_db.otp).update(status = True)
+            Service.objects.filter(coupon_id = otp).update(status = True)
             print('Exists')
         else:
             print("not")
