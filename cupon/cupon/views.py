@@ -67,21 +67,19 @@ def gen(camera):
     while True:
         frame, stat= camera.get_frame()
         if stat:
-            camera.release_camera()
-            check_qr()
-            return 
+            return
         yield (b'--frame \r\n'
                 b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
         
 
-def check_qr():
-    qr_db = QrData.objects.last()
-    service_db = Service.objects.filter(coupon_id=qr_db.otp)
-    if service_db.exists() and service_db.first().status == False:
-        Service.objects.filter(coupon_id=qr_db.otp).update(status = True)
-        return HttpResponseRedirect('/display/')
-    else:
-        print("not")
+# def check_qr():
+#     qr_db = QrData.objects.last()
+#     service_db = Service.objects.filter(coupon_id=qr_db.otp)
+#     if service_db.exists() and service_db.first().status == False:
+#         Service.objects.filter(coupon_id=qr_db.otp).update(status = True)
+#         return HttpResponseRedirect('/display/')
+#     else:
+#         print("not")
 
 
 def displayStatus(request):
