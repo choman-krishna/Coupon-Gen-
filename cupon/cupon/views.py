@@ -69,7 +69,7 @@ def gen(camera):
         if stat:
             camera.release_camera()
             check_qr()
-            return
+            pass
         yield (b'--frame \r\n'
                 b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
         
