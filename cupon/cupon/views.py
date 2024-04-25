@@ -1,4 +1,4 @@
-from django.http import HttpResponse, HttpResponseRedirect, StreamingHttpResponse
+from django.http import HttpResponse, HttpResponseRedirect, StreamingHttpResponse, JsonResponse
 from django.shortcuts import render
 from django.views.decorators import gzip
 
@@ -6,6 +6,7 @@ from cupon import qr
 from cupon import otp_Gen
 from services.models import Service, EventList
 from cupon import qr_scanner
+from cupon.qr_scanner import VideoCamera
 
 def homePage(request):
     return render(request, 'home_page.html')
@@ -58,18 +59,23 @@ def scan_qr(request):
 
 @gzip.gzip_page   
 def cameraView(request):    
+    stat = False
     cam = qr_scanner.VideoCamera()
-    return StreamingHttpResponse(gen(cam), content_type = "multipart/x-mixed-replace;boundary=frame")
+    return StreamingHttpResponse(gen(cam, stat), content_type = "multipart/x-mixed-replace;boundary=frame")
 
 
 
-def gen(camera):
-    while True:
-        frame, stat= camera.get_frame()
+def gen(camera, stat):
+    
+    while not stat:
+        frame, stat = camera.get_frame()
         if stat:
-            return
+            yield b'--text \r\n' + b'Content-Type: text/plain\r\n\r\n' + b'Hello\r\n\r\n'
         yield (b'--frame \r\n'
                 b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
+        
+def check_status(request):
+    return JsonResponse({'c_stat' : VideoCamera.coupon_status})
         
 
 # def check_qr():

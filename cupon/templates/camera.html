@@ -1,10 +1,30 @@
 {% include 'header.html' %}
     
-        <div  class="w3-main" style="margin-left:300px;margin-top:60px;">
-            
-            <div>
-                <img src="/cameraOn/">
-            </div>
-        </div>
+<div class="w3-main" style="margin-left:300px;margin-top:60px;">
+    <div>
+        <img src="/cameraOn/" id="qrImage">
+        <div id="couponStatus"></div>
+    </div>
+</div>
 
 {% include 'footer.html' %}
+
+<script>
+    // Function to update the coupon status dynamically
+    function updateCouponStatus() {
+        // Make an AJAX request to fetch the latest coupon status
+        fetch('/get_coupon_status/')
+            .then(response => response.json())
+            .then(data => {
+                // Update the coupon status on the page
+                document.getElementById('couponStatus').innerText = 'Coupon Status: ' + data.c_stat ;
+                console.log(data)
+            })
+            .catch(error => {
+                console.error('Error fetching coupon status:', error);
+            });
+    }
+
+    // Call the updateCouponStatus function periodically (e.g., every 2 seconds)
+    setInterval(updateCouponStatus, 2000);
+</script>

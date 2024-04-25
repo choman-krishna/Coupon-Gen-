@@ -6,12 +6,17 @@ from services.models import Service
 
 class VideoCamera(object):
 
-    thread_flag = True
+    
+    scanned_otp = None    
+    coupon_status = None
     
     def __init__(self):
         self.video = cv2.VideoCapture(0)
         _, self.frame = self.video.read()
         self.qr_scanned = False
+
+        self.thread_flag = True
+
         threading.Thread(target=self.update, args=()).start()
 
     def release_camera(self):
@@ -31,16 +36,14 @@ class VideoCamera(object):
         for i in decode(img):
             self.qr_data = i.data.decode('utf-8')
             self.qr_scanned = True
-
-            cv2.waitKey(3)                     
+                  
 
         # Qr Scanning ends
 
         self.data_list = self.qr_data.split(',')
         if self.qr_scanned and len(self.data_list) == 3:
-            # data_db = QrData(name=self.data_list[0], otp=)
-            # data_db.save()
-            self.check_qr(self.data_list[2])
+            self.scanned_otp = self.data_list[2]
+            self.check_qr(self.scanned_otp)
             self.release_camera()
             
 
@@ -52,9 +55,11 @@ class VideoCamera(object):
         service_db = Service.objects.filter(coupon_id = otp)
         if service_db.exists() and service_db.first().status == False:
             Service.objects.filter(coupon_id = otp).update(status = True)
-            print('Exists')
+
+            self.coupon_status = "PASS"
+            self.scanned_otp = otp
         else:
-            print("not")
+            self.coupon_status = "False"
         
     
     def update(self):
