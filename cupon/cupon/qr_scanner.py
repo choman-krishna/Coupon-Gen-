@@ -7,13 +7,15 @@ from services.models import Service
 class VideoCamera(object):
 
     
-    scanned_otp = None    
-    coupon_status = None
+    
     
     def __init__(self):
         self.video = cv2.VideoCapture(0)
         _, self.frame = self.video.read()
         self.qr_scanned = False
+
+        self.scanned_otp = None    
+        self.coupon_status = None
 
         self.thread_flag = True
 
@@ -35,7 +37,9 @@ class VideoCamera(object):
 
         for i in decode(img):
             self.qr_data = i.data.decode('utf-8')
-            self.qr_scanned = True
+            if self.qr_data:
+                self.qr_scanned = True
+                break
                   
 
         # Qr Scanning ends
@@ -48,7 +52,7 @@ class VideoCamera(object):
             
 
 
-        return jpeg.tobytes(), self.qr_scanned
+        return jpeg.tobytes(), self.qr_scanned, self.scanned_otp
 
 
     def check_qr(self,otp):
