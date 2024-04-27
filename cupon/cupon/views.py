@@ -11,13 +11,18 @@ from services.forms import CreateUserForm
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 
+from cupon.decorators import allowed_users
+from django.contrib.auth.models import Group
+
 from cupon import qr_generator
 from cupon import otp_Gen
 from services.models import Service, EventList
 from cupon import qr_scanner
 from cupon.qr_scanner import VideoCamera
 
+
 @login_required(login_url='/login/')
+@allowed_users(allowed_roles=['admin'])
 def homePage(request):
     return render(request, 'home_page.html')
 
@@ -68,8 +73,11 @@ def register_user(request):
     if request.method == 'POST':
         forms = CreateUserForm(request.POST)
         if forms.is_valid():
-            forms.save()
+            user = forms.save()
             messages.success(request, 'Account was created for ' + forms.cleaned_data.get('username'))
+
+            group = Group.objects.get(name = 'users')
+            user.groups.add(group)
             
             return redirect('/login/')
 
