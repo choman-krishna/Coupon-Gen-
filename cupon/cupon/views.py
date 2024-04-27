@@ -1,19 +1,31 @@
+# Import basic http and shortcuts
 from django.http import HttpResponse, HttpResponseRedirect, StreamingHttpResponse
 from django.shortcuts import render, redirect
+
+# For Streaming 
 from django.views.decorators import gzip
+
+# Import the Session
 from django.contrib.sessions.models import Session
 
 
 # Login & Register 
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
-from services.forms import CreateUserForm
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 
+# To create user
+from services.forms import CreateUserForm
+
+# To import Decorators 
+from cupon.decorators import unauthenticated_user
 from cupon.decorators import allowed_users
+
+# Import Groups 
 from django.contrib.auth.models import Group
 
+# Defined Functions 
 from cupon import qr_generator
 from cupon import otp_Gen
 from services.models import Service, EventList
@@ -21,11 +33,13 @@ from cupon import qr_scanner
 from cupon.qr_scanner import VideoCamera
 
 
+# Home Page
 @login_required(login_url='/login/')
 @allowed_users(allowed_roles=['admin'])
 def homePage(request):
     return render(request, 'home_page.html')
 
+# Generate Coupon
 @login_required(login_url='/login/')
 def genCoupon(request):
     form_data = []
@@ -44,14 +58,16 @@ def genCoupon(request):
             data_db = Service(name=name, event = event, coupon_id = otp, qr_img = img_path)
             data_db.save()
 
+            # Redirect to Display Coupon
             return HttpResponseRedirect('/coupon/')
     except:
         pass
-
+    
+    # Event database
     event_db = EventList.objects.all()
     return render(request,"user_templates/gen_coupon.html", {'event_data': event_db})
 
-
+# To Display Coupon
 @login_required(login_url='/login/')
 def coupon(request):
 
@@ -60,14 +76,15 @@ def coupon(request):
 
     return render(request, 'user_templates/coupon.html', {'qr_data': service_data, "d_m_y": event_db})
 
+# Table of Coupon
 @login_required(login_url='/login/')
 def viewCoupons(request):
     service_data = Service.objects.all() 
 
     return render(request, 'user_templates/view-coupon.html', {'coupon_data': service_data})
 
-# Login & Register 
 
+# Register 
 def register_user(request):
     forms = CreateUserForm()
 
@@ -85,8 +102,8 @@ def register_user(request):
     content = {'forms': forms}
     return render(request, 'register.html', content)
 
-from cupon.decorators import unauthenticated_user
 
+# Login 
 @unauthenticated_user
 def login_user(request):
     if request.method == 'POST':
@@ -103,19 +120,19 @@ def login_user(request):
             messages.success(request, "User name or Password is incorrect")
     return render(request, 'login.html')
 
+# Logout
 def logout_user(request):
     logout(request)
     return redirect('/login/')
 
-# Camera Streaming 
-
+# Camera Display Page
 @login_required(login_url='/login/')
 def scan_qr(request):
          
     return render(request, 'user_templates/camera_view.html')
 
 
-
+# Camera Streaming Logic
 @gzip.gzip_page   
 def cameraView(request):   
     stat = False
@@ -137,24 +154,6 @@ def gen(request, camera, stat):
             return
         yield (b'--frame \r\n'
                 b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
-        
-# def check_status(request):
-#     return JsonResponse({'c_stat' : VideoCamera.coupon_status})
-        
-
-# def check_qr():
-#     qr_db = QrData.objects.last()
-#     service_db = Service.objects.filter(coupon_id=qr_db.otp)
-#     if service_db.exists() and service_db.first().status == False:
-#         Service.objects.filter(coupon_id=qr_db.otp).update(status = True)
-#         return HttpResponseRedirect('/display/')
-#     else:
-#         print("not")
-
-
-# def displayStatus(request):
-#     scanned_otp = request.session.get('scanned_otp')
-#     return scanned_otp
         
 
 from django.http import JsonResponse
