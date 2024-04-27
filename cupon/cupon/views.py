@@ -152,6 +152,8 @@ def gen(request, camera, stat):
     while not stat:
         frame, stat, scanned_otp, coupon_status = camera.get_frame()
         if stat:
+            request.session['scan_status'] = stat
+            request.session.save()
             scanned_db = ScannedData(username = request.session['username'], scanned_otp = scanned_otp, otp_status = coupon_status)
             scanned_db.save()
             return
@@ -162,15 +164,19 @@ def gen(request, camera, stat):
 from django.http import JsonResponse
 
 def  displayStatus(request):
-    # Retrieve the display status data
-    # For example, you might retrieve it from the database
-    print('loki',ScannedData.objects.filter(username = request.session['username']).order_by('scanned_time').last().otp_status)
+    
+    resent_scan = ScannedData.objects.filter(username = request.session['username']).order_by('scanned_time').last()
+
+    if 'scan_status' in request.session:
+        scanned_status = request.session['scan_status']
+        print(scanned_status)
+    else:
+        scanned_status = None 
+        print(scanned_status)
+    
     display_status = {
-        'status': ScannedData.objects.filter(username = request.session['username']).order_by('scanned_time').last().otp_status
+        'otp_status': resent_scan.otp_status,
+        'scanned_status' : scanned_status
     }
     return JsonResponse(display_status)
 
-
-
-def playSession(request):
-    return HttpResponse(request.session['username'] + ' ' +request.session['scanned_otp'])

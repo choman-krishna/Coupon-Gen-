@@ -16,24 +16,33 @@
 <script>
 
     $(document).ready(function() {
+        
+        var intervalId
 
         function getDisplayStatus() {
             $.ajax({
                 url : '/display/',
                 type : 'GET',
                 success : function(response){
-                    var displayStatus = response.status;
+                    var displayStatus = response.otp_status;
 
                     $('#couponStatus').text('Coupon Status: ' + displayStatus);
+
+                   if (response.scanned_status){
+                    clearInterval(intervalId);
+                   }
+
 
                 },
                 error: function(xhr, status, error) {
                     console.error('Error: ', error);
                 }
             });
+            
         }
 
-        setInterval(getDisplayStatus, 2000);
+        
+        intervalId = setInterval(getDisplayStatus, 2000);
 
     });
 
