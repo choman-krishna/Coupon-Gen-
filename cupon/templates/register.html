@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+    <title>Register</title>
+</head>
+<body>
+
+
+    <div class="container">
+        <div class="row">
+          <div class="col-md-6 offset-md-3">
+            <h2 class="text-center text-dark mt-5">Register Form</h2>
+            <div class="text-center mb-5 text-dark">Made with love</div>
+            <div class="card my-5">
+    
+              <form class="card-body cardbody-color p-lg-5" method="post" action="/register/">
+
+                
+
+                <div class="text-center">
+                  <img src="https://cdn.pixabay.com/photo/2016/03/31/19/56/avatar-1295397__340.png" class="img-fluid profile-image-pic img-thumbnail rounded-circle my-3"
+                    width="200px" alt="profile">
+                </div>
+                
+                {% csrf_token %}
+
+                <div class="mb-3">
+                  <!-- <input type="text" class="form-control" id="Username" aria-describedby="emailHelp"
+                    placeholder="User Name"> -->
+                    {{ forms.username}}
+                    
+
+                </div>
+                <div class="mb-3">
+                    {{ forms.email}}
+                </div>
+
+                <div class="mb-3">
+                    {{ forms.password1}}
+                </div>
+
+                <div class="mb-3">
+                    {{ forms.password2}}
+                </div>
+
+
+                <div class="text-center"><button type="submit" class="btn btn-color px-5 mb-5 w-100">Register</button></div>
+                <div id="emailHelp" class="form-text text-center mb-5 text-dark">
+                  Already have an account? <a href="/login/" class="text-dark fw-bold">Login</a>
+                </div>
+              </form>
+            </div>
+    
+          </div>
+        </div>
+      </div>
+
+    
+    <!-- <form method="post" action="/login/">
+        
+        
+
+        <input type="submit" name = "Create User"> 
+
+    </form> -->
+
+
+    <script>
+
+        var form_field = document.getElementsByTagName("input")
+        form_field[1].placeholder = 'Username........'
+        form_field[2].placeholder = 'Email........'
+        form_field[3].placeholder = 'Password........'
+        form_field[4].placeholder = 'Conform Password........'
+        
+        
+        for (var field in form_field){
+            form_field[field].className += "form-control"
+        }
+        
+
+    </script>
+
+</body>
+</html>

@@ -3,15 +3,25 @@ from django.shortcuts import render, redirect
 from django.views.decorators import gzip
 from django.contrib.sessions.models import Session
 
+
+# Login & Register 
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib import messages
+from services.forms import CreateUserForm
+from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth.decorators import login_required
+
 from cupon import qr_generator
 from cupon import otp_Gen
 from services.models import Service, EventList
 from cupon import qr_scanner
 from cupon.qr_scanner import VideoCamera
 
+@login_required(login_url='/login/')
 def homePage(request):
     return render(request, 'home_page.html')
 
+@login_required(login_url='/login/')
 def genCoupon(request):
     form_data = []
     img_path = ''
@@ -37,7 +47,7 @@ def genCoupon(request):
     return render(request,"gen_coupon.html", {'event_data': event_db})
 
 
-
+@login_required(login_url='/login/')
 def coupon(request):
 
     service_data = Service.objects.latest('created_at') 
@@ -45,14 +55,51 @@ def coupon(request):
 
     return render(request, 'coupon.html', {'qr_data': service_data, "d_m_y": event_db})
 
-
+@login_required(login_url='/login/')
 def viewCoupons(request):
     service_data = Service.objects.all() 
     return render(request, 'view-coupon.html', {'coupon_data': service_data})
 
+# Login & Register 
+
+def register_user(request):
+    forms = CreateUserForm()
+
+    if request.method == 'POST':
+        forms = CreateUserForm(request.POST)
+        if forms.is_valid():
+            forms.save()
+            messages.success(request, 'Account was created for ' + forms.cleaned_data.get('username'))
+            
+            return redirect('/login/')
+
+    content = {'forms': forms}
+    return render(request, 'register.html', content)
+
+from cupon.decorators import unauthenticated_user
+
+@unauthenticated_user
+def login_user(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        user = authenticate(request, username=username, password = password)
+
+        if user is not None:
+            login(request, user)
+            return redirect('/generator/')
+        else:
+            messages.success(request, "User name or Password is incorrect")
+    return render(request, 'login.html')
+
+def logout_user(request):
+    logout(request)
+    return redirect('/login/')
 
 # Camera Streaming 
 
+@login_required(login_url='/login/')
 def scan_qr(request):
          
     return render(request, 'camera.html')

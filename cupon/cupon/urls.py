@@ -30,7 +30,9 @@ urlpatterns = [
     path('check/', views.scan_qr) ,
     path('cameraOn/', views.cameraView),
     path('display/', views.displayStatus),
-    # path('get_coupon_status/', views.check_status)
+    path('login/', views.login_user),
+    path('logout/', views.logout_user),
+    path('register/', views.register_user)
 ]
 
 if settings.DEBUG:
