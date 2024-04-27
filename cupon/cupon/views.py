@@ -8,6 +8,9 @@ from django.views.decorators import gzip
 # Import the Session
 from django.contrib.sessions.models import Session
 
+# Models
+from services.models import Service, EventList, ScannedData
+
 
 # Login & Register 
 from django.contrib.auth.forms import UserCreationForm
@@ -28,7 +31,6 @@ from django.contrib.auth.models import Group
 # Defined Functions 
 from cupon import qr_generator
 from cupon import otp_Gen
-from services.models import Service, EventList
 from cupon import qr_scanner
 from cupon.qr_scanner import VideoCamera
 
@@ -115,6 +117,7 @@ def login_user(request):
         if user is not None:
             login(request, user)
             request.session['username'] = username
+            request.session['scanned_otp'] = 'nothing'
             return redirect('/generator/')
         else:
             messages.success(request, "User name or Password is incorrect")
@@ -147,10 +150,10 @@ def cameraView(request):
 def gen(request, camera, stat):
     
     while not stat:
-        frame, stat, scanned_otp = camera.get_frame()
+        frame, stat, scanned_otp, coupon_status = camera.get_frame()
         if stat:
-            print(scanned_otp + 'in gen')
-            request.session['scanned_otp'] = scanned_otp
+            scanned_db = ScannedData(username = request.session['username'], scanned_otp = scanned_otp, otp_status = coupon_status)
+            scanned_db.save()
             return
         yield (b'--frame \r\n'
                 b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
@@ -161,13 +164,13 @@ from django.http import JsonResponse
 def  displayStatus(request):
     # Retrieve the display status data
     # For example, you might retrieve it from the database
-    print(type(request.session.get('scanned_otp'))) 
+    print('loki',ScannedData.objects.filter(username = request.session['username']).order_by('scanned_time').last().otp_status)
     display_status = {
-        'status': request.session.get('scanned_otp')
+        'status': ScannedData.objects.filter(username = request.session['username']).order_by('scanned_time').last().otp_status
     }
     return JsonResponse(display_status)
 
 
 
 def playSession(request):
-    return HttpResponse(request.session['username'])
+    return HttpResponse(request.session['username'] + ' ' +request.session['scanned_otp'])

@@ -15,5 +15,10 @@ class EventList (models.Model):
     month = models.CharField(max_length=10, default='May')
     year = models.CharField(max_length=4, default='2024')
 
+class ScannedData(models.Model):
+    username = models.CharField(max_length=20)
+    scanned_otp = models.CharField(max_length = 20)    
+    scanned_time = models.DateTimeField(default=timezone.now)
+    otp_status = models.CharField(max_length=20)
 
 # Create your models here.

@@ -47,12 +47,12 @@ class VideoCamera(object):
         self.data_list = self.qr_data.split(',')
         if self.qr_scanned and len(self.data_list) == 3:
             self.scanned_otp = self.data_list[2]
-            self.check_qr(self.scanned_otp)
+            self.coupon_status = self.check_qr(self.scanned_otp)
             self.release_camera()
             
 
 
-        return jpeg.tobytes(), self.qr_scanned, self.scanned_otp
+        return jpeg.tobytes(), self.qr_scanned, self.scanned_otp, self.coupon_status
 
 
     def check_qr(self,otp):
@@ -64,6 +64,8 @@ class VideoCamera(object):
             self.scanned_otp = otp
         else:
             self.coupon_status = "False"
+
+        return self.coupon_status
         
     
     def update(self):
