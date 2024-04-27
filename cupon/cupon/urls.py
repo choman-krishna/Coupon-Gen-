@@ -32,7 +32,8 @@ urlpatterns = [
     path('display/', views.displayStatus),
     path('login/', views.login_user),
     path('logout/', views.logout_user),
-    path('register/', views.register_user)
+    path('register/', views.register_user),
+    path('play/', views.playSession)
 ]
 
 if settings.DEBUG:

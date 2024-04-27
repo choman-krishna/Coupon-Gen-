@@ -49,7 +49,7 @@ def genCoupon(request):
         pass
 
     event_db = EventList.objects.all()
-    return render(request,"gen_coupon.html", {'event_data': event_db})
+    return render(request,"user_templates/gen_coupon.html", {'event_data': event_db})
 
 
 @login_required(login_url='/login/')
@@ -58,12 +58,13 @@ def coupon(request):
     service_data = Service.objects.latest('created_at') 
     event_db = EventList.objects.get(event_name = service_data.event)
 
-    return render(request, 'coupon.html', {'qr_data': service_data, "d_m_y": event_db})
+    return render(request, 'user_templates/coupon.html', {'qr_data': service_data, "d_m_y": event_db})
 
 @login_required(login_url='/login/')
 def viewCoupons(request):
     service_data = Service.objects.all() 
-    return render(request, 'view-coupon.html', {'coupon_data': service_data})
+
+    return render(request, 'user_templates/view-coupon.html', {'coupon_data': service_data})
 
 # Login & Register 
 
@@ -96,6 +97,7 @@ def login_user(request):
 
         if user is not None:
             login(request, user)
+            request.session['username'] = username
             return redirect('/generator/')
         else:
             messages.success(request, "User name or Password is incorrect")
@@ -110,7 +112,7 @@ def logout_user(request):
 @login_required(login_url='/login/')
 def scan_qr(request):
          
-    return render(request, 'camera.html')
+    return render(request, 'user_templates/camera_view.html')
 
 
 
@@ -165,3 +167,8 @@ def  displayStatus(request):
         'status': request.session.get('scanned_otp')
     }
     return JsonResponse(display_status)
+
+
+
+def playSession(request):
+    return HttpResponse(request.session['username'])
