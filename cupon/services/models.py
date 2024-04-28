@@ -21,4 +21,10 @@ class ScannedData(models.Model):
     scanned_time = models.DateTimeField(default=timezone.now)
     otp_status = models.CharField(max_length=20)
 
+class GenScanStatus(models.Model):
+    name = models.CharField(max_length = 10)
+    status = models.BooleanField(default = True)
+    
+
+
 # Create your models here.

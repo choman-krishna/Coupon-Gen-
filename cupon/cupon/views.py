@@ -9,7 +9,7 @@ from django.views.decorators import gzip
 from django.contrib.sessions.models import Session
 
 # Models
-from services.models import Service, EventList, ScannedData
+from services.models import Service, EventList, ScannedData, GenScanStatus
 
 
 # Login & Register 
@@ -210,3 +210,36 @@ def offCamera(request):
     global cam 
     VideoCamera.release_camera(cam)
     return HttpResponse("Camera Off") 
+
+
+# Admin Page
+
+def adminPage(request):
+
+    gen_db = GenScanStatus.objects.all()
+    data = {
+        "gen_status": str(gen_db[0].status).lower(),
+        "scan_status": str(gen_db[1].status).lower()
+    }
+    print(data["scan_status"])
+    return render(request, 'admin_home_page.html', data)
+
+# Toggle gen and scan
+
+def genStatus(request):
+
+    if request.method == 'GET':
+
+        is_toggle = request.GET.get("is_toggle")
+        name = request.GET.get("toggle_name")
+
+        is_toggle = True if is_toggle == 'true' else False
+
+        print(name)
+        gen_data = GenScanStatus.objects.filter(name=name).first()
+        
+        
+        gen_data.status = is_toggle 
+        gen_data.save()
+
+    return JsonResponse({"res": "done"})

@@ -34,7 +34,9 @@ urlpatterns = [
     path('logout/', views.logout_user),
     path('register/', views.register_user),
     path('resetSession/', views.resetSession),
-    path('offCamera/', views.offCamera)
+    path('offCamera/', views.offCamera),
+    path('adminPage/', views.adminPage),
+    path('genStatus/', views.genStatus)
 ]
 
 if settings.DEBUG:

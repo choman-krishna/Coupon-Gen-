@@ -1,5 +1,5 @@
 from django.contrib import admin
-from services.models import Service, EventList, ScannedData
+from services.models import Service, EventList, ScannedData, GenScanStatus
 
 class ServiceAdmin(admin.ModelAdmin):
     list_display = ('name', 'event', 'coupon_id', 'status', 'qr_img', 'created_at')
@@ -13,7 +13,11 @@ class EventAdmin(admin.ModelAdmin):
 class ScannedDataAdmin(admin.ModelAdmin):
     list_display = ('username', 'scanned_otp', 'scanned_time')
 
+class GenScanStatusAdmin(admin.ModelAdmin):
+    list_display = ('name', 'status')
+
 # Register your models here.
 admin.site.register(Service, ServiceAdmin)
 admin.site.register(EventList, EventAdmin)
 admin.site.register(ScannedData, ScannedDataAdmin)
+admin.site.register(GenScanStatus, GenScanStatusAdmin)

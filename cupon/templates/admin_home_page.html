@@ -1,0 +1,330 @@
+{% include 'header.html' %}
+<style>
+    
+.switch > .row {
+  padding-bottom: 2rem;
+  vertical-align: middle;
+  text-align: center;
+}
+
+.switch h3 {
+  font-weight: 400;
+}
+.switch h3 > small {
+  font-weight: 200;
+  font-size: 0.75em;
+  color: #939aa5;
+}
+.switch h6 {
+  font-weight: 700;
+  font-size: 0.90rem;
+  letter-spacing: 3.32px;
+  text-transform: uppercase;
+  color: #bdc1c8;
+  margin: 0;
+  line-height: 3rem;
+}
+.switch .btn-toggle {
+  top: 50%;
+  transform: translateY(-50%);
+}
+.btn-toggle {
+  margin: 0 4rem;
+  padding: 0;
+  position: relative;
+  border: none;
+  height: 1.5rem;
+  width: 3rem;
+  border-radius: 1.5rem;
+  color: #6b7381;
+  background: #bdc1c8;
+}
+.btn-toggle:focus,
+.btn-toggle.focus,
+.btn-toggle:focus.active,
+.btn-toggle.focus.active {
+  outline: none;
+}
+.btn-toggle:before,
+.btn-toggle:after {
+  line-height: 1.5rem;
+  width: 4rem;
+  text-align: center;
+  font-weight: 600;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  position: absolute;
+  bottom: 0;
+  transition: opacity 0.25s;
+}
+.btn-toggle:before {
+  content: 'Off';
+  left: -4rem;
+}
+.btn-toggle:after {
+  content: 'On';
+  right: -4rem;
+  opacity: 0.5;
+}
+.btn-toggle > .handle {
+  position: absolute;
+  top: 0.1875rem;
+  left: 0.1875rem;
+  width: 1.125rem;
+  height: 1.125rem;
+  border-radius: 1.125rem;
+  background: #fff;
+  transition: left 0.25s;
+}
+.btn-toggle.active {
+  transition: background-color 0.25s;
+}
+.btn-toggle.active > .handle {
+  left: 1.6875rem;
+  transition: left 0.25s;
+}
+.btn-toggle.active:before {
+  opacity: 0.5;
+}
+.btn-toggle.active:after {
+  opacity: 1;
+}
+
+.btn-toggle.btn-xs:before,
+.btn-toggle.btn-xs:after {
+  display: none;
+}
+.btn-toggle:before,
+.btn-toggle:after {
+  color: #6b7381;
+}
+.btn-toggle.active {
+  background-color: #29b5a8;
+}
+.btn-toggle.btn-lg {
+  margin: 0 5rem;
+  padding: 0;
+  position: relative;
+  border: none;
+  height: 2.5rem;
+  width: 5rem;
+  border-radius: 2.5rem;
+}
+.btn-toggle.btn-lg:focus,
+.btn-toggle.btn-lg.focus,
+.btn-toggle.btn-lg:focus.active,
+.btn-toggle.btn-lg.focus.active {
+  outline: none;
+}
+.btn-toggle.btn-lg:before,
+.btn-toggle.btn-lg:after {
+  line-height: 2.5rem;
+  width: 5rem;
+  text-align: center;
+  font-weight: 600;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  position: absolute;
+  bottom: 0;
+  transition: opacity 0.25s;
+}
+.btn-toggle.btn-lg:before {
+  content: 'Off';
+  left: -5rem;
+}
+.btn-toggle.btn-lg:after {
+  content: 'On';
+  right: -5rem;
+  opacity: 0.5;
+}
+.btn-toggle.btn-lg > .handle {
+  position: absolute;
+  top: 0.3125rem;
+  left: 0.3125rem;
+  width: 1.875rem;
+  height: 1.875rem;
+  border-radius: 1.875rem;
+  background: #fff;
+  transition: left 0.25s;
+}
+.btn-toggle.btn-lg.active {
+  transition: background-color 0.25s;
+}
+.btn-toggle.btn-lg.active > .handle {
+  left: 2.8125rem;
+  transition: left 0.25s;
+}
+.btn-toggle.btn-lg.active:before {
+  opacity: 0.5;
+}
+.btn-toggle.btn-lg.active:after {
+  opacity: 1;
+}
+.btn-toggle.btn-lg.btn-sm:before,
+.btn-toggle.btn-lg.btn-sm:after {
+  line-height: 0.5rem;
+  color: #fff;
+  letter-spacing: 0.75px;
+  left: 0.6875rem;
+  width: 3.875rem;
+}
+.btn-toggle.btn-lg.btn-sm:before {
+  text-align: right;
+}
+.btn-toggle.btn-lg.btn-sm:after {
+  text-align: left;
+  opacity: 0;
+}
+.btn-toggle.btn-lg.btn-sm.active:before {
+  opacity: 0;
+}
+.btn-toggle.btn-lg.btn-sm.active:after {
+  opacity: 1;
+}
+.btn-toggle.btn-lg.btn-xs:before,
+.btn-toggle.btn-lg.btn-xs:after {
+  display: none;
+}
+</style>
+{% include 'sidebar.html' %}
+
+    <div  class="w3-main" style="margin-left:300px;margin-top:60px;">
+       
+        <div class="w3-row-padding w3-margin-bottom">
+
+            <a href="/generator">
+              <div class="w3-quarter">
+                <div class="w3-container w3-red w3-padding-16">
+                  <div class="w3-center"><i class="fa fa-calendar-day w3-xxxlarge"></i></div>
+                  <div class="w3-clear"></div><br>
+                  <h4 class="w3-center"> Add / Edit<br> Event</h4>
+                </div>
+              </div>
+            </a>
+        
+            <a href="/check">
+              <div class="w3-quarter">
+                <div class="w3-container w3-blue w3-padding-16">
+                  <div class="w3-center"><i class="fa fa-user-plus w3-xxxlarge"></i></i></div>        
+                  <div class="w3-clear"></div><br>
+                  <h4 class="w3-center">Add <br>Volunteers</h4>
+                </div>
+              </div>
+            </a>
+        
+            <a href="/viewCoupons">
+              <div class="w3-quarter">
+                <div class="w3-container w3-teal w3-padding-16">  
+                  <div class="w3-center"><i class="fa fa-info w3-xxxlarge"></i></i></div>      
+                  <div class="w3-clear"></div><br>
+                  <h4 class="w3-center">Detailed <br> Info..</h4>
+                </div>
+              </div>
+            </a>
+
+            <!-- <div class="w3-quarter">
+              <div class="w3-container w3-orange w3-text-white w3-padding-16">
+                <div class="w3-center"><i class="fa fa-users w3-xxxlarge"></i></div>
+                <div class="w3-right">
+                  <h3>50</h3>
+                </div>
+                <div class="w3-clear"></div>
+                <h4 class="w3-center">Users</h4>
+              </div>
+            </div> -->
+        
+        </div>
+
+        <div class="container switch w3-main w3-center" style="margin-top:60px;">
+
+            
+                
+
+                <div class="row">
+            
+                
+            
+                <div class="col-sm-5">
+                    <h6 class = "change-color w3-center ">Generate</h6>
+                    <button id="generate-toggle" type="button" class="btn btn-lg btn-toggle" data-toggle="button" aria-pressed = "{{ gen_status }}">
+                    <div class="handle"></div>
+                    </button>
+                </div>
+                        
+            
+                </div>
+                
+                <hr>
+                
+                <div class="row">
+            
+                    <div class="col-sm-12">
+                    
+                    </div>
+                    
+                    <div class="col-sm-5">
+                    <h6 class="w3-center change-color ">Scan</h6>
+                    <button id="scan-toggle" type="button" class="btn btn-lg btn-toggle " data-toggle="button" aria-pressed="{{scan_status}}" >
+                        <div class="handle"></div>
+                    </button>
+                    </div>
+                
+                
+                </div>
+        
+        </div>  
+          
+          
+
+
+    </div>
+
+    {% include 'footer.html' %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+
+    <script>
+
+        const gen_toggle = document.getElementById('generate-toggle')
+        const scan_toggle = document.getElementById('scan-toggle')
+
+
+
+        var gen_isToggle = gen_toggle.ariaPressed == 'true' ? true : false;
+        var scan_isToggle = scan_toggle.ariaPressed == 'true' ? true : false;
+
+        console.log("gen" + gen_isToggle)
+        console.log("scan" + scan_isToggle)
+
+        gen_toggle.addEventListener('click', function(){
+            gen_isToggle = !gen_isToggle;
+            alert(gen_isToggle)
+            ajax_update(gen_isToggle, "generator")
+        })
+
+        scan_toggle.addEventListener('click', function(){
+            scan_isToggle = !scan_isToggle;
+            alert(scan_isToggle)
+            ajax_update(scan_isToggle, "scan")
+        })
+
+        function ajax_update(isToggle, scanOrGen){
+          console.log("I was here")
+          $.ajax({
+                type : 'GET',
+                url: '/genStatus/',
+                data : {
+                    is_toggle : isToggle,
+                    toggle_name: scanOrGen
+                },
+                success: function(response)  {alert(response);},
+                error : function (xhr, errmsg, err)  {
+                    console.error(response);
+                }
+            });
+        }
+
+    </script>
+
