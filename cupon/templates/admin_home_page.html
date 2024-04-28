@@ -295,18 +295,16 @@
         var gen_isToggle = gen_toggle.ariaPressed == 'true' ? true : false;
         var scan_isToggle = scan_toggle.ariaPressed == 'true' ? true : false;
 
-        console.log("gen" + gen_isToggle)
-        console.log("scan" + scan_isToggle)
+        
 
         gen_toggle.addEventListener('click', function(){
             gen_isToggle = !gen_isToggle;
-            alert(gen_isToggle)
             ajax_update(gen_isToggle, "generator")
         })
 
         scan_toggle.addEventListener('click', function(){
             scan_isToggle = !scan_isToggle;
-            alert(scan_isToggle)
+            
             ajax_update(scan_isToggle, "scan")
         })
 
@@ -319,7 +317,9 @@
                     is_toggle : isToggle,
                     toggle_name: scanOrGen
                 },
-                success: function(response)  {alert(response);},
+                success: function(response)  {
+                  alert(response.res);
+                },
                 error : function (xhr, errmsg, err)  {
                     console.error(response);
                 }

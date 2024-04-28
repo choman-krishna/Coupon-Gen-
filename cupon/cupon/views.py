@@ -39,7 +39,14 @@ from cupon.qr_scanner import VideoCamera
 @login_required(login_url='/login/')
 @allowed_users(allowed_roles=['admin'])
 def homePage(request):
-    return render(request, 'home_page.html')
+    
+    gen_status = GenScanStatus.objects.filter(name="generator").first().status
+    scan_status = GenScanStatus.objects.filter(name="scan").first().status
+    content ={
+        'gen': gen_status,
+        'scan': scan_status
+    }
+    return render(request, 'home_page.html', content)
 
 # Generate Coupon
 @login_required(login_url='/login/')
@@ -221,7 +228,7 @@ def adminPage(request):
         "gen_status": str(gen_db[0].status).lower(),
         "scan_status": str(gen_db[1].status).lower()
     }
-    print(data["scan_status"])
+    
     return render(request, 'admin_home_page.html', data)
 
 # Toggle gen and scan
@@ -234,12 +241,11 @@ def genStatus(request):
         name = request.GET.get("toggle_name")
 
         is_toggle = True if is_toggle == 'true' else False
-
-        print(name)
+        
         gen_data = GenScanStatus.objects.filter(name=name).first()
         
         
         gen_data.status = is_toggle 
         gen_data.save()
 
-    return JsonResponse({"res": "done"})
+    return JsonResponse({"res": "Change Updated"})
