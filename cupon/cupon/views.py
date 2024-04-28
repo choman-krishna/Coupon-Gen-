@@ -141,14 +141,16 @@ cam = None
 # Camera Display Page
 @login_required(login_url='/login/')
 def scan_qr(request):
-    global cam 
-    cam = VideoCamera()    
-    off_status = ''
 
+    get_scan = GenScanStatus.objects.filter(name="scan").first()
+    status = get_scan.status
+    if status:
+        global cam 
+        cam = VideoCamera()    
 
-     
-
-    return render(request, 'user_templates/camera_view.html')
+        return render(request, 'user_templates/camera_view.html')
+    else:
+        return HttpResponse("Dont have Access")
 
 
 
@@ -257,8 +259,15 @@ def addEvent(request):
         event_name = request.POST.get("Event")
         date = request.POST.get("Date")
 
-        add_event = EventList(event_name=event_name, date = date)
-        add_event.save()
-        print("Saved")
+        is_present = EventList.objects.filter(event_name=event_name).exists()
+        
+        if not is_present:
+            add_event = EventList(event_name=event_name, date = date)
+            add_event.save()
+        else:
+            print("Already Present")
+        
 
-    return render(request, 'addEvent.html')
+    event_data = EventList.objects.all()
+
+    return render(request, 'addEvent.html', {'event_data' : event_data})
