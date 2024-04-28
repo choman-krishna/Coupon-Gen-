@@ -249,3 +249,16 @@ def genStatus(request):
         gen_data.save()
 
     return JsonResponse({"res": "Change Updated"})
+
+
+def addEvent(request):
+
+    if request.method == 'POST':
+        event_name = request.POST.get("Event")
+        date = request.POST.get("Date")
+
+        add_event = EventList(event_name=event_name, date = date)
+        add_event.save()
+        print("Saved")
+
+    return render(request, 'addEvent.html')

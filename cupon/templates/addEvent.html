@@ -1,0 +1,44 @@
+{% include "header.html" %}
+{% include 'sidebar.html' %}
+
+    <div class="w3-main" style="margin-left:300px;margin-top:60px;">
+        <div class="container m-3" >
+            <form action="/addEvent/" method="post">
+
+                {% csrf_token %}
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Event Name</label>
+                            <input type="text" class="form-control" name="Event" id="name" >
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="event" class="form-label">Date</label>
+                        <select name="Date" class="form-select form-control" aria-label="Default select example" id="event">
+                            <option selected>Open this select menu</option>
+                            <!-- Should Be Updated to make it relevant -->
+                                <option value="8">8th</option>
+                                <option value="7">7th</option>
+                            
+                        </select>
+                    </div>
+                </div>
+            
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-6 offset-md-3 text-center">
+                            <!-- Content in the center -->
+                            <button type="submit" class="btn btn-primary m-2 p-4">Add Event</button>
+                        </div>
+                    </div>
+                </div>
+                
+                
+            </form>
+          </div>
+    </div>
+
+{% include 'footer.html' %}

@@ -36,7 +36,8 @@ urlpatterns = [
     path('resetSession/', views.resetSession),
     path('offCamera/', views.offCamera),
     path('adminPage/', views.adminPage),
-    path('genStatus/', views.genStatus)
+    path('genStatus/', views.genStatus),
+    path('addEvent/', views.addEvent)
 ]
 
 if settings.DEBUG:
