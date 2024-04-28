@@ -118,6 +118,8 @@ def login_user(request):
             login(request, user)
             request.session['username'] = username
             request.session['scanned_otp'] = 'nothing'
+            request.session['scan_status'] = False
+            request.session.save()
             return redirect('/generator/')
         else:
             messages.success(request, "User name or Password is incorrect")
@@ -128,20 +130,28 @@ def logout_user(request):
     logout(request)
     return redirect('/login/')
 
+cam = None
 # Camera Display Page
 @login_required(login_url='/login/')
 def scan_qr(request):
-         
+    global cam 
+    cam = VideoCamera()    
+    off_status = ''
+
+
+     
+
     return render(request, 'user_templates/camera_view.html')
+
 
 
 # Camera Streaming Logic
 @gzip.gzip_page   
 def cameraView(request):   
     stat = False
-    cam = qr_scanner.VideoCamera()
+    global cam
     stream = StreamingHttpResponse(gen(request, cam, stat), content_type = "multipart/x-mixed-replace;boundary=frame")
-    print(stream)
+       
     
     return stream
 
@@ -157,6 +167,9 @@ def gen(request, camera, stat):
             scanned_db = ScannedData(username = request.session['username'], scanned_otp = scanned_otp, otp_status = coupon_status)
             scanned_db.save()
             return
+        else:
+            request.session['scan_status'] = False
+            request.session.save()
         yield (b'--frame \r\n'
                 b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
         
@@ -166,6 +179,13 @@ from django.http import JsonResponse
 def  displayStatus(request):
     
     resent_scan = ScannedData.objects.filter(username = request.session['username']).order_by('scanned_time').last()
+    
+
+    if resent_scan != None:
+         otp_status = resent_scan.otp_status
+    else:
+        otp_status = 'Not Yet Scanned'
+    
 
     if 'scan_status' in request.session:
         scanned_status = request.session['scan_status']
@@ -175,8 +195,18 @@ def  displayStatus(request):
         print(scanned_status)
     
     display_status = {
-        'otp_status': resent_scan.otp_status,
+        'otp_status': otp_status,
         'scanned_status' : scanned_status
     }
     return JsonResponse(display_status)
 
+def resetSession(request):
+    request.session['scan_status'] = False
+    request.session.save()
+    return HttpResponse("LOLOLOLOLOLOLOLO")
+
+
+def offCamera(request):
+    global cam 
+    VideoCamera.release_camera(cam)
+    return HttpResponse("Camera Off") 

@@ -5,6 +5,19 @@
     <div>
         <img src="/cameraOn/" id="qrImage">
         <div id="couponStatus"></div>
+
+        <form action="/check/" method="post">
+            {% csrf_token %}
+            <button
+                type="submit"
+                class="btn btn-primary"
+                value="True"
+                name="button_value"
+            >
+                Stop
+            </button>
+            
+        </form>
     </div>
 </div>
 
@@ -29,8 +42,19 @@
                     $('#couponStatus').text('Coupon Status: ' + displayStatus);
 
                    if (response.scanned_status){
-                    clearInterval(intervalId);
+                    window.location.href = "/resetSession/";
                    }
+                   const initialLocation = window.location.href;
+
+                    window.onpopstate = function() {
+                    const currentLocation = window.location.href;
+                    if (currentLocation !== initialLocation) {
+                        // User went back
+                        window.location.href = "/offcamera/";
+                        // Your event handling logic here
+                        }
+                    };
+                   
 
 
                 },
@@ -38,7 +62,7 @@
                     console.error('Error: ', error);
                 }
             });
-            
+
         }
 
         

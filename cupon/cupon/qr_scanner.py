@@ -4,6 +4,7 @@ from pyzbar.pyzbar import decode
 from services.models import Service
 
 
+
 class VideoCamera(object):
 
     
@@ -39,16 +40,20 @@ class VideoCamera(object):
             self.qr_data = i.data.decode('utf-8')
             if self.qr_data:
                 self.qr_scanned = True
+                self.release_camera()
                 break
                   
 
         # Qr Scanning ends
 
         self.data_list = self.qr_data.split(',')
-        if self.qr_scanned and len(self.data_list) == 3:
-            self.scanned_otp = self.data_list[2]
-            self.coupon_status = self.check_qr(self.scanned_otp)
-            self.release_camera()
+        if self.qr_scanned:
+            if len(self.data_list) == 3:
+                self.scanned_otp = self.data_list[2]
+                self.coupon_status = self.check_qr(self.scanned_otp)
+            else:
+                self.coupon_status = "Invalid QR"
+            # self.release_camera()
             
 
 
