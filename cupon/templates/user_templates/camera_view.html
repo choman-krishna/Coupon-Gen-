@@ -6,16 +6,7 @@
         <img src="/cameraOn/" id="qrImage">
         <div id="couponStatus"></div>
 
-        <form action="/check/" method="post">
-            {% csrf_token %}
-            <button
-                type="submit"
-                class="btn btn-primary"
-                value="True"
-                name="button_value"
-            >
-                Stop
-            </button>
+        
             
         </form>
     </div>
@@ -28,46 +19,19 @@
 
 <script>
 
-    $(document).ready(function() {
-        
-        var intervalId
-
-        function getDisplayStatus() {
-            $.ajax({
-                url : '/display/',
+    window.addEventListener("beforeunload", function(event){
+        $.ajax({
                 type : 'GET',
-                success : function(response){
-                    var displayStatus = response.otp_status;
-
-                    $('#couponStatus').text('Coupon Status: ' + displayStatus);
-
-                   if (response.scanned_status){
-                    window.location.href = "/resetSession/";
-                   }
-                   const initialLocation = window.location.href;
-
-                    window.onpopstate = function() {
-                    const currentLocation = window.location.href;
-                    if (currentLocation !== initialLocation) {
-                        // User went back
-                        window.location.href = "/offcamera/";
-                        // Your event handling logic here
-                        }
-                    };
-                   
-
-
+                url: '/offCamera/',
+                data : {},
+                success: function(response)  {
+                  alert(response.res);
                 },
-                error: function(xhr, status, error) {
-                    console.error('Error: ', error);
+                error : function (xhr, errmsg, err)  {
+                    console.error(response);
                 }
             });
-
-        }
-
-        
-        intervalId = setInterval(getDisplayStatus, 2000);
-
+        return ''
     });
 
 </script>

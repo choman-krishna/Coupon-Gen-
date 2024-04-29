@@ -218,7 +218,7 @@ def resetSession(request):
 def offCamera(request):
     global cam 
     cam.release_camera()
-    return HttpResponse("Camera Off") 
+    return JsonResponse({"res" : "Camera Off"}) 
 
 
 # Admin Page
