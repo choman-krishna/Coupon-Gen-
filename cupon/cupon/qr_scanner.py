@@ -5,9 +5,9 @@ from services.models import Service
 
 
 
-class VideoCamera(object):
 
-    
+
+class VideoCamera(object):   
     
     
     def __init__(self):
@@ -21,6 +21,10 @@ class VideoCamera(object):
         self.thread_flag = True
 
         threading.Thread(target=self.update, args=()).start()
+
+    def __del__(self):
+        self.video.release()
+        self.thread_flag = False
 
     def release_camera(self):
         self.video.release()

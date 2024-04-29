@@ -12,14 +12,14 @@
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label for="name" class="form-label">Event Name</label>
-                            <input type="text" class="form-control" name="Event" id="name" >
+                            <input type="text" class="form-control" name="Event" id="name" required>
                         </div>
                     </div>
 
                     <div class="col-md-6">
                         <label for="event" class="form-label">Date</label>
-                        <select name="Date" class="form-select form-control" aria-label="Default select example" id="event">
-                            <option selected>Open this select menu</option>
+                        <select name="Date" class="form-select form-control" aria-label="Default select example" id="event" required>
+                            <option selected disabled>Open this select menu</option>
                             <!-- Should Be Updated to make it relevant -->
                                 <option value="8">8th</option>
                                 <option value="7">7th</option>
@@ -50,7 +50,7 @@
                       <th scope="col">Day</th>
                       <th scope="col">Month</th>
                       <th scope="col">Year</th>
-                      <th scope="col">Action</th>
+                      <!-- <th scope="col">Action</th> -->
                     </tr>
                   </thead>
                   <tbody>
@@ -63,7 +63,7 @@
                         <td>{{n.month}}</td>
                         <td>{{n.year}}</td>
                         <td>
-                            <button  type="button" class="btn btn-primary edit{{forloop.counter}}"><i class="fa fa-pen"></i></button>
+                            <!-- <button  type="button" class="btn btn-primary edit{{forloop.counter}} editable"><i class="fa fa-pen"></i></button> -->
                         <!-- <button type="button" class="btn btn-danger"><i class="far fa-trash-alt"></i></button> -->
                         </td>
                         </tr>
@@ -79,10 +79,4 @@
 
 {% include 'footer.html' %}
 
-<script>
 
-    $(document).ready(function() {
-        const 
-    });
-
-</script>

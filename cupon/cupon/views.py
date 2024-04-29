@@ -137,7 +137,7 @@ def logout_user(request):
     logout(request)
     return redirect('/login/')
 
-cam = None
+
 # Camera Display Page
 @login_required(login_url='/login/')
 def scan_qr(request):
@@ -217,7 +217,7 @@ def resetSession(request):
 
 def offCamera(request):
     global cam 
-    VideoCamera.release_camera(cam)
+    cam.release_camera()
     return HttpResponse("Camera Off") 
 
 

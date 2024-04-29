@@ -33,6 +33,8 @@
                     </div>
                 </div>
 
+                <button id="download">Download</button>
+
                 
 
 
@@ -43,3 +45,14 @@
     
 
 {% include "../footer.html" %}
+
+<script>
+
+    const dButton = document.getElementById("download")
+    const ticket = document.getElementsByClassName("ticket")
+
+    console.log(dButton)
+    dButton.addEventListener('click', function (){
+        print()
+    });
+</script>
