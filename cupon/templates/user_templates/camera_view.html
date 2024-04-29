@@ -19,6 +19,38 @@
 
 <script>
 
+
+var intervalId
+
+function getDisplayStatus() {
+    $.ajax({
+        url : '/display/',
+        type : 'GET',
+        success : function(response){
+            var displayStatus = response.status;
+            var displayStatus = response.otp_status;
+
+            $('#couponStatus').text('Coupon Status: ' + displayStatus);
+
+           if (response.scanned_status){
+            window.location.href = "/resetSession/";
+           }
+
+
+        },
+        error: function(xhr, status, error) {
+            console.error('Error: ', error);
+        }
+    });
+
+}
+
+setInterval(getDisplayStatus, 2000);
+
+intervalId = setInterval(getDisplayStatus, 2000);
+
+
+
     window.addEventListener("beforeunload", function(event){
         $.ajax({
                 type : 'GET',
