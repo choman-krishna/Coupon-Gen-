@@ -66,13 +66,15 @@ class VideoCamera(object):
 
     def check_qr(self,otp):
         service_db = Service.objects.filter(coupon_id = otp)
-        if service_db.exists() and service_db.first().status == False:
-            Service.objects.filter(coupon_id = otp).update(status = True)
+        if service_db.exists():
+            if service_db.first().status == False:
+                Service.objects.filter(coupon_id = otp).update(status = True)
 
-            self.coupon_status = "PASS"
-            self.scanned_otp = otp
+                self.coupon_status = "PASS"
+            else:
+                self.coupon_status = "USED"
         else:
-            self.coupon_status = "False"
+            self.coupon_status = "INVALID"
 
         return self.coupon_status
         

@@ -6,6 +6,15 @@
     <title>Document</title>
 </head>
 <body>
-    asdfasdfwtasfgsegag
+    {% if status == "USED" %}
+    asdfsadf
+    <img src="https://ih1.redbubble.net/image.1032504085.8676/st,small,507x507-pad,600x600,f8f8f8.u6.jpg" alt="used">
+    {% elif status == "INVALID" %}
+    asdf
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdU8weC1beenG4COIeRJD-eIm-QB3Lj6WFVS1y6ZjWQw&s" alt="invalid" style="height: 50rem;">
+    {% elif status == "PASS" %}
+    asdfasdf
+    <img src="https://thumbs.dreamstime.com/b/vector-valid-grunge-stamp-seal-tick-inside-green-valid-watermark-grunge-texture-round-rubber-stamp-imprint-valid-139450873.jpg" alt="valid">
+    {% endif %}
 </body>
 </html>

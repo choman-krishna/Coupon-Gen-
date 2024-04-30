@@ -218,9 +218,14 @@ def  displayStatus(request):
     return JsonResponse(display_status)
 
 def resetSession(request):
+
+    content = {
+        "status": request.session['scan_status']
+    }
     request.session['scan_status'] = False
     request.session.save()
-    return HttpResponse("LOLOLOLOLOLOLOLO")
+
+    return render(request, "displayStatus.html", content)
 
 
 def offCamera(request):
