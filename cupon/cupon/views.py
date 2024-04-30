@@ -9,7 +9,7 @@ from django.views.decorators import gzip
 from django.contrib.sessions.models import Session
 
 # Models
-from services.models import Service, EventList, ScannedData, GenScanStatus
+from services.models import Service, EventList, ScannedData, GenScanStatus, UsnApproval
 
 
 # Login & Register 
@@ -103,6 +103,13 @@ def register_user(request):
             user = forms.save()
             messages.success(request, 'Account was created for ' + forms.cleaned_data.get('username'))
 
+            
+            usn = request.POST.get("usn")
+            username = request.POST.get("username")
+
+            UsnApproval(name=username, usn=usn)
+            UsnApproval.save()
+            
             group = Group.objects.get(name = 'users')
             user.groups.add(group)
             
@@ -271,3 +278,10 @@ def addEvent(request):
     event_data = EventList.objects.all()
 
     return render(request, 'addEvent.html', {'event_data' : event_data})
+
+# Approval List
+def approvalList(request):
+
+    return render(request, "approve_list.html")
+
+
