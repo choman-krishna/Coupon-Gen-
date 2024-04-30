@@ -24,6 +24,10 @@ class ScannedData(models.Model):
 class GenScanStatus(models.Model):
     name = models.CharField(max_length = 10)
     status = models.BooleanField(default = True)
+
+class UsnApproval(models.Model):
+    name = models.CharField(max_length=20)
+    usn = models.CharField(max_length=10)
     
 
 
