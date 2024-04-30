@@ -28,6 +28,7 @@ class GenScanStatus(models.Model):
 class UsnApproval(models.Model):
     name = models.CharField(max_length=20)
     usn = models.CharField(max_length=10)
+    approval_status = models.BooleanField(default=False)
     
 
 

@@ -37,8 +37,11 @@
 
                 </div>
                 <div class="mb-3">
-                    {{ forms.email}}
+                  <input type="text" name="usn" id="usn">
                 </div>
+
+
+                
 
                 <div class="mb-3">
                     {{ forms.password1}}
@@ -73,10 +76,10 @@
     <script>
 
         var form_field = document.getElementsByTagName("input")
-        form_field[1].placeholder = 'Username........'
-        form_field[2].placeholder = 'Email........'
-        form_field[3].placeholder = 'Password........'
-        form_field[4].placeholder = 'Conform Password........'
+        form_field[1].placeholder = 'Username ........'
+        form_field[2].placeholder = 'USN ........'
+        form_field[3].placeholder = 'Password ........'
+        form_field[4].placeholder = 'Conform Password ........'
         
         
         for (var field in form_field){

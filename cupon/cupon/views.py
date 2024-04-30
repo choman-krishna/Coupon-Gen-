@@ -22,8 +22,7 @@ from django.contrib.auth.decorators import login_required
 from services.forms import CreateUserForm
 
 # To import Decorators 
-from cupon.decorators import unauthenticated_user
-from cupon.decorators import allowed_users
+from cupon.decorators import unauthenticated_user, allowed_admin, allowed_user
 
 # Import Groups 
 from django.contrib.auth.models import Group
@@ -37,7 +36,8 @@ from cupon.qr_scanner import VideoCamera
 
 # Home Page
 @login_required(login_url='/login/')
-@allowed_users(allowed_roles=['admin'])
+# @allowed_admin(allowed_roles=['admin'])
+@allowed_user()
 def homePage(request):
     
     gen_status = GenScanStatus.objects.filter(name="generator").first().status
@@ -46,6 +46,7 @@ def homePage(request):
         'gen': gen_status,
         'scan': scan_status
     }
+
     return render(request, 'home_page.html', content)
 
 # Generate Coupon
@@ -107,9 +108,9 @@ def register_user(request):
             usn = request.POST.get("usn")
             username = request.POST.get("username")
 
-            UsnApproval(name=username, usn=usn)
-            UsnApproval.save()
-            
+            user_approval = UsnApproval(name=username, usn=usn)
+            user_approval.save()
+
             group = Group.objects.get(name = 'users')
             user.groups.add(group)
             
@@ -282,6 +283,25 @@ def addEvent(request):
 # Approval List
 def approvalList(request):
 
-    return render(request, "approve_list.html")
+    
 
+
+
+    
+
+    approved_list = UsnApproval.objects.filter(approval_status=True)
+    not_approved_list = UsnApproval.objects.filter(approval_status=False)
+
+    content = {"approved": approved_list, "not_approved": not_approved_list}
+    return render(request, "approve_list.html", content)
+
+def approveBlock(request):
+
+    if request.method == 'GET':
+        name = request.GET.get("username")
+        action = request.GET.get("action")
+
+        UsnApproval.objects.filter(name=name).update(approval_status = True if action == "approve" else False)
+
+    return JsonResponse({"res": "Change Updated"})
 

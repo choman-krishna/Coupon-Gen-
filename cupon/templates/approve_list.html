@@ -1,0 +1,138 @@
+{% include "header.html" %}
+{% include "sidebar.html" %}
+
+    <div class="w3-main" style="margin-left:300px;margin-top:43px;">
+
+
+        <div class="container ticket">
+            <div class="row">
+              <div class="col-12">
+                <table class="table table-bordered m-3 ">
+                  <thead>
+                    <tr>
+                      <th scope="col">No.</th>
+                      <th scope="col">Name</th>
+                      <th scope="col">USN</th>
+                      <th scope="col">Status</th>
+                      <th scope="col">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for n in not_approved %}
+                        <tr style="background-color: rgba(247, 4, 4, 0.419);">
+                        <th>{{forloop.counter}}</th>
+                        <td>{{n.name}}</td>
+                        <td>{{n.usn}}</td>
+                        <td>Not Approved</td>
+                        <td>
+                            <button type="button" class="btn btn-primary approve"><i class="fa fa-clipboard-check"></i></button>
+                        <!-- <button type="button" class="btn btn-danger"><i class="far fa-trash-alt"></i></button> -->
+                        </td>
+                        </tr>
+                    {% endfor %}
+
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+        <div class="container ticket">
+            <div class="row">
+              <div class="col-12">
+                <table class="table table-bordered m-3 ">
+                  <thead>
+                    <tr>
+                      <th scope="col">No.</th>
+                      <th scope="col">Name</th>
+                      <th scope="col">USN</th>
+                      <th scope="col">Status</th>
+                      <th scope="col">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for n in approved %}
+                        <tr style="background-color: rgba(11, 245, 66, 0.292);">
+                        <th>{{forloop.counter}}</th>
+                        <td>{{n.name}}</td>
+                        <td>{{n.usn}}</td>
+                        <td>Approved</td>
+                        <td>
+                            <!-- <button type="button" class="btn btn-primary"><i class="far fa-eye"></i></button> -->
+                        <button type="button" class="btn btn-danger block"><i class="far fa-trash-alt"></i></button>
+                        </td>
+                        </tr>
+                    {% endfor %}
+
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+
+          
+
+    </div>
+
+{% include "footer.html" %}
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+<script>
+
+    const approve_btn = document.querySelectorAll(".approve")
+    const block_btn = document.querySelectorAll(".block")
+    
+    approve_btn.forEach(btn => {
+        btn.addEventListener('click', function(){
+        alert("U want to Approve")
+        const row = this.closest('tr');
+          // Get data from each <td> element in the row
+          const rowData = Array.from(row.querySelectorAll('td')).map(td => td.textContent);
+          username = rowData[0]
+          change_status(username, "approve")
+        })
+    })
+
+    block_btn.forEach(btn => {
+        btn.addEventListener('click', function(){
+            
+
+            alert("U wanna Block")
+            const row = this.closest('tr');
+            // Get data from each <td> element in the row
+            const rowData = Array.from(row.querySelectorAll('td')).map(td => td.textContent);
+            username = rowData[0]
+            change_status(username, "block")
+        
+        })
+    })
+
+
+    function change_status(username, action){
+
+        $.ajax({
+            type: 'GET',
+            url: "/approveBlock/",
+            data: {
+                username: username,
+                action : action
+            },
+            
+            success: function(response)  {
+                  alert(response.res);
+                },
+                error : function (xhr, errmsg, err)  {
+                    console.error(response);
+                }
+
+
+        });
+
+    }
+    
+    
+
+</script>

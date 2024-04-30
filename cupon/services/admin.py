@@ -17,7 +17,7 @@ class GenScanStatusAdmin(admin.ModelAdmin):
     list_display = ('name', 'status')
 
 class UsnApprovalAdmin(admin.ModelAdmin):
-    list_display = ('name', 'usn')
+    list_display = ('name', 'usn', 'approval_status')
 
 # Register your models here.
 admin.site.register(Service, ServiceAdmin)

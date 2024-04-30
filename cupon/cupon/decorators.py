@@ -1,5 +1,6 @@
 from django.http import HttpResponse
-from django.shortcuts import redirect 
+from django.shortcuts import redirect, render
+from services.models import UsnApproval
 
 def unauthenticated_user(view_func):
     def wrapper_func(request, *args, **kwargs):
@@ -11,7 +12,7 @@ def unauthenticated_user(view_func):
     
     return wrapper_func
 
-def allowed_users(allowed_roles = []):
+def allowed_admin(allowed_roles = []):
     def decorator(view_func):
         def wrapper_func(request, *args, **kwargs):
 
@@ -23,6 +24,24 @@ def allowed_users(allowed_roles = []):
                     return view_func(request, *args, **kwargs)
                 else:
                     return HttpResponse('You dont belong here')
+                
+                
+        return wrapper_func
+    return decorator
+
+def allowed_user():
+    def decorator(view_func):
+        def wrapper_func(request, *args, **kwargs):
+
+            usn = UsnApproval.objects.filter(name=request.user).first()
+            print(request.user)
+            
+            if request.user.groups.exists():
+                
+                if usn and usn.approval_status == True:
+                    return view_func(request, *args, **kwargs)
+                else:
+                    return render(request, "templates/askApproval.html")
                 
                 
         return wrapper_func

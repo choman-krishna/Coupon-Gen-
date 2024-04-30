@@ -37,7 +37,9 @@ urlpatterns = [
     path('offCamera/', views.offCamera),
     path('adminPage/', views.adminPage),
     path('genStatus/', views.genStatus),
-    path('addEvent/', views.addEvent)
+    path('addEvent/', views.addEvent),
+    path('approvalList/', views.approvalList),
+    path('approveBlock/', views.approveBlock)
 ]
 
 if settings.DEBUG:
